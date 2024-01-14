@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+{% extends 'app/base.html' %}
+{% load static %}
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+    <body>
+        {%block login%}
+        <a  class="btn btn-outline-dark" href="{% url 'manage_take_quiz' course.id%}">&#x2190; Quay lại</a>
+        <h2 class="text-center text-muted mt-5 mb-0">{{ course.name }} - Quản Lí Câu Hỏi</h2>
+
+        <ul>
+          {% for question in questions %}
+            <li>
+              <strong>{{ question.text_question }}</strong>
+              <ul>
+                {% for option in question.option_set.all %}
+                  <li>
+                    {{ option.text_option }}
+                    {% if option.is_correct %}
+                      (Correct)
+                    {% endif %}
+                  </li>
+                {% endfor %}
+              </ul>
+              <a href="{% url 'update_question' course.id question.id %}">Chỉnh sửa</a>
+              <form method="post" action="{% url 'delete_question' course.id question.id %}" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit">Xóa</button>
+              </form>
+            </li>
+          {% endfor %}
+        </ul>
+
+        <a class="btn btn-outline-success" href="{% url 'create_question' course.id %}">Thêm câu hỏi</a>
+        {%for message in messages %}
+        <p id='message' class="text-center text-muted mt-5 mb-0">{{message}}</p>
+        {%endfor%}
+        {%endblock login%}
+
+    </body>
+</html>

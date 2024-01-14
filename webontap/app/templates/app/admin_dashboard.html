@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+{% extends 'app/base.html' %}
+{% load static %}
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+    <body>
+      {%block login%}
+      <br><br><br><br>
+        <style>
+          table {
+              width: 50%; /* Đặt chiều rộng của bảng, có thể điều chỉnh theo nhu cầu của bạn */
+              margin: 0 auto; /* Đặt margin để căn giữa theo chiều ngang */
+              border-collapse: collapse;
+            }
+          #customers {
+            font-family: Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 70%;
+          }
+          
+      
+          th, td {
+              border: 1px solid #ddd;
+              padding: 8px;
+              text-align: left;
+              max-width: 200px; /* Đặt chiều rộng tối đa cho cột */
+              overflow: hidden;
+              text-overflow: ellipsis; /* Hiển thị dấu ... nếu nội dung quá dài */
+              word-wrap: break-word; /* Xuống hàng nếu nội dung quá dài */
+            }
+          
+          #customers tr:nth-child(even){background-color: #f2f2f2;}
+          
+          #customers tr:hover {background-color: #ddd;}
+          
+          #customers th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color:     #3CB371
+
+            ;
+            color: white;
+          }
+          .colspanned {
+            background-color: #7CFC00
+
+            ; /* Màu sắc cho cột đã trộn */
+          }
+          </style>
+          <table id="customers">
+              <tr>
+                  <td class="colspanned text-center" colspan="6"><h1>DANH SÁCH NGƯỜI DÙNG ĐÃ THAM GIA CHỦ ĐỀ</h1>
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="col">User</th>
+                  <th scope="col">Thời gian tham gia</th>
+                  <th scope="col">Các kết quả bài làm</th>
+                        
+                </tr>
+                <tbody>
+                  {% for info in course_info %}
+                  <tr>
+                    <td>{{ info.user.username }}</td>
+                    <td>{{ info.date }}</td>
+                    <td><a class="btn btn-outline-success" href="{% url 'quiz_results' info.course.id info.user.id %}"><strong>XEM TẤT CẢ KẾT QUẢ</strong></a></td>
+
+                  </tr>
+                {% endfor %}
+
+              </tbody>
+              
+            </table><br><br>
+        {%endblock login%}
+    </body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+{% extends 'app/base.html' %}
+{% load static %}
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+    <body>
+    {%block login%}
+        
+          <style>
+            table {
+                width: 50%; /* Đặt chiều rộng của bảng, có thể điều chỉnh theo nhu cầu của bạn */
+                margin: 0 auto; /* Đặt margin để căn giữa theo chiều ngang */
+                border-collapse: collapse;
+              }
+            #customers {
+              font-family: Arial, Helvetica, sans-serif;
+              border-collapse: collapse;
+              width: 30%;
+            }
+            
+        
+            th, td {
+                border: 1px solid #ddd;
+                padding: 8px;
+                text-align: left;
+                max-width: 200px; /* Đặt chiều rộng tối đa cho cột */
+                overflow: hidden;
+                text-overflow: ellipsis; /* Hiển thị dấu ... nếu nội dung quá dài */
+                word-wrap: break-word; /* Xuống hàng nếu nội dung quá dài */
+              }
+            
+            #customers tr:nth-child(even){background-color: #f2f2f2;}
+            
+            #customers tr:hover {background-color: #ddd;}
+            
+            #customers th {
+              padding-top: 12px;
+              padding-bottom: 12px;
+              text-align: left;
+              background-color:  #7CFC00
+              ;
+              color: white;
+            }
+            .colspanned {
+              background-color: #04AA6D
+
+              ; /* Màu sắc cho cột đã trộn */
+            }
+            </style>
+        <table id="customers">
+            <tr>
+                <td class="colspanned text-center" colspan="2">THÔNG TIN CÁ NHÂN</td>
+              </tr>
+            <tr>
+              <th>Username</th>
+              <td> {{ user.username }}</td>
+            </tr>
+            <tr>
+              <th>Email</th>
+              <td> {{ user.email }}</td>
+            </tr>
+            <tr>
+              <th>First Name</th>
+              <td> {{ user.first_name }}</td>
+            </tr>
+            <tr>
+              <th>Last Name</th>
+              <td> {{ user.last_name }}</td>
+            </tr>
+            
+          </table>
+        <!-- Thêm các thông tin khác nếu cần -->
+        <div class="text-center text-muted mt-5 mb-0">
+
+        <a class="btn btn-outline-success" href="{% url 'update_profile' %}">Cập nhật thông tin</a>
+        <a class="btn btn-outline-success" href="{% url 'update_password' %}">Thay đổi mật khẩu</a>
+        </div>
+        {%for message in messages %}
+            <p id='message' class="text-center text-muted mt-5 mb-0">{{message}}</p>
+        {%endfor%}
+
+
+    {%endblock login%}
+
+    </body>
+</html>

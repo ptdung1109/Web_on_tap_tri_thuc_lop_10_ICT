@@ -1,0 +1,12 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block cart_content %}
+	<h2 class="text-center text-muted mt-5 mb-0">Tất cả tài liệu tham khảo</h2>
+
+	<ul>
+		{% for reference in references %}
+			<li><a href="{{ reference.link }}" target="_blank">{{ reference.name }}</a></li>
+		{% endfor %}
+	</ul>
+
+{% endblock cart_content %}

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+{% extends 'app/base.html' %}
+{% load static %}
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+    <body>
+    {%block login%}
+
+        <a  class="btn btn-outline-dark" href="{% url 'home_admin' %}">&#x2190; Quay lại</a>
+        <form method="post" action="{% url 'save_question_selection' course.id %}">
+            {% csrf_token %}
+            <style>
+                table {
+                  width: 100%;
+                  border-collapse: collapse;
+                }
+                th, td {
+                  border: 1px solid #ddd;
+                  padding: 8px;
+                  text-align: left;
+                  max-width: 200px; 
+                  overflow: hidden;
+                  text-overflow: ellipsis; 
+                  word-wrap: break-word; 
+                }
+                .colspanned {
+                    background-color: #04AA6D
+                  }
+              </style>
+                      <table class="table">
+                          <thead class="thead-light">
+                            <tr>
+                                <td class="colspanned text-center" colspan="4"><h1>{{ course.name }} - Quản Lí Bài Làm</h1></td>
+                            </tr>
+                            <tr>
+                              <th scope="col">Nội dung câu hỏi</th>
+                              <th scope="col">Nội dung yêu cầu cần đạt</th>
+                              <th scope="col">Yêu cầu cần đạt</th>
+                              <th scope="col">Mức độ hiểu biết</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {% for question in questions %}
+                            <tr>
+                              <th scope="row"> <input type="checkbox" name="questions" value="{{ question.id }}" data-yccd="{{ question.yccd_id }}" {% if question.show_in_quiz %}checked{% endif %}>
+                                Câu {{ forloop.counter }}: {{ question.text_question }} </th>
+                              <td>{{ question.yccd.content_yccd }}</td>
+                              <td>{{ question.yccd }}</td>
+                              <td>{{ question.knowledge }}</td>
+
+                            </tr>
+                            {% endfor %}
+                          </tbody>
+                        </table>
+                        <div class="text-center text-muted mt-5 mb-0">
+                            <button type="button"class="btn btn-outline-success" id="randomizeBtn">Chọn Ngẫu Nhiên</button>
+                            <input type="submit" class="btn btn-outline-success" value="Save Selection">
+                        </div>
+
+            <a class="btn btn-outline-success" href="{% url 'manage_questions' course.id%}"><strong>Quản lí câu hỏi</strong></a>
+            <a class="btn btn-outline-success" href="{% url 'admin_dashboard' course.id%}"><strong>Quản lí người học</strong></a>
+
+
+        </form>
+
+        <script>
+             
+            document.addEventListener('DOMContentLoaded', function() {
+                var randomizeBtn = document.getElementById('randomizeBtn');
+                var checkboxes = document.querySelectorAll('[name="questions"]');
+            
+                randomizeBtn.addEventListener('click', function() {
+                    var selectedQuestions = [];
+                    var requiredCount = 20;  
+                    var groupedQuestions = {};
+                    checkboxes.forEach(function(checkbox) {
+                        var yccd = checkbox.getAttribute('data-yccd');
+                        if (!groupedQuestions[yccd]) groupedQuestions[yccd] = [];
+                        groupedQuestions[yccd].push(checkbox.value);
+                    });
+            
+                    function getRandomQuestions(arr, n) {
+                        var shuffled = arr.slice(0);
+                        var i = arr.length;
+                        var min = i - n;
+                        var temp, index;
+            
+                        while (i-- > min) {
+                            index = Math.floor((i + 1) * Math.random());
+                            temp = shuffled[index];
+                            shuffled[index] = shuffled[i];
+                            shuffled[i] = temp;
+                        }
+            
+                        return shuffled.slice(min);
+                    }
+            
+                    Object.keys(groupedQuestions).forEach(function(yccd) {
+                        var questionsForYCCD = groupedQuestions[yccd];
+            
+                        questionsForYCCD = questionsForYCCD.filter(function(question) {
+                            return !selectedQuestions.includes(question);
+                        });
+            
+                        var randomQuestions = getRandomQuestions(questionsForYCCD, 2);
+                        selectedQuestions = selectedQuestions.concat(randomQuestions);
+                    });
+            
+                    while (selectedQuestions.length < requiredCount) {
+                        var remainingCheckboxes = Array.from(checkboxes).filter(function(checkbox) {
+                            return !checkbox.checked;
+                        });
+            
+                        remainingCheckboxes = remainingCheckboxes.filter(function(checkbox) {
+                            return !selectedQuestions.includes(checkbox.value);
+                        });
+            
+                        if (remainingCheckboxes.length > 0) {
+                            var randomIndex = Math.floor(Math.random() * remainingCheckboxes.length);
+                            remainingCheckboxes[randomIndex].checked = true;
+                            selectedQuestions.push(remainingCheckboxes[randomIndex].value);
+                        } else {
+                            break;  
+                        }
+                    }
+            
+                    if (selectedQuestions.length > requiredCount) {
+                        selectedQuestions = selectedQuestions.slice(0, requiredCount);
+                    }
+            
+                    checkboxes.forEach(function(checkbox) {
+                        checkbox.checked = selectedQuestions.includes(checkbox.value);
+                    });
+                });
+            });
+            </script>
+        {%for message in messages %}
+        <p id='message' class="text-center text-muted mt-5 mb-0">{{message}}</p>
+        {%endfor%}
+    {%endblock login%}
+    </body>
+</html>

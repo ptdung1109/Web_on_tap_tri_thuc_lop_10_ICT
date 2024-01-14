@@ -1,0 +1,40 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block cart_content %}
+<div class="row">
+	<div class="col-lg-12">
+		<div class="box-element">
+
+			<a  class="btn btn-outline-dark" href="{% url 'home' %}">&#x2190; Quay lại</a>
+
+			<br>
+			<br>
+			<table class="table">
+				
+			</table>
+
+		</div>
+
+		<br>
+		<div class="box-element">
+			<div class="cart-row">
+				<div style="flex:2"><strong>Tên chủ đề</strong></div>
+				<div style="flex:2"><strong>Khối lớp</strong></div>
+				<div style="flex:1"><strong>Ngày tham gia</strong></div>
+				<div style="flex:1"><strong></strong></div>
+			</div>
+				{% for join in user_joined_courses %}
+			<div class="cart-row">
+				<div style="flex:2"><p>{{join.course.name}}</p></div>
+				<div style="flex:2"><p class="quantity">{{join.course.grade.content_grade}}</p></div>
+				<div style="flex:1"><p>{{join.date}}</p></div>
+				<div style="flex:1"><a class="btn btn-outline-success" href="{% url 'quiz_results' join.course.id join.user.id%}"><strong>XEM TẤT CẢ KẾT QUẢ</strong></a>
+				</div>
+			</div>
+			{% endfor %}
+
+		</div>
+	</div>
+</div>
+{% endblock cart_content %}
+

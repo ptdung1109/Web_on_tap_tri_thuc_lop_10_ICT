@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+{% extends 'app/base.html' %}
+{% load static %}
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+<body>
+        {%block login%}
+        <br>
+        <br>
+        <br>
+
+          <style>
+            table {
+                width: 50%; 
+                margin: 0 auto; 
+                border-collapse: collapse;
+              }
+            #customers {
+              font-family: Arial, Helvetica, sans-serif;
+              border-collapse: collapse;
+              width: 60%;
+            }
+            
+        
+            th, td {
+                border: 1px solid #ddd;
+                padding: 8px;
+                text-align: left;
+                max-width: 200px; 
+                overflow: hidden;
+                text-overflow: ellipsis; 
+                word-wrap: break-word; 
+              }
+            
+            #customers tr:nth-child(even){background-color: #f2f2f2;}
+            
+            #customers tr:hover {background-color: #ddd;}
+            
+            #customers th {
+              padding-top: 12px;
+              padding-bottom: 12px;
+              text-align: left;
+              background-color:    #04AA6D
+              ;
+              color: white;
+            }
+            .colspanned {
+              background-color: #90EE90
+            }
+            </style>
+        <table id="customers">
+            <tr>
+                <td class="colspanned text-center" colspan="6"><h1>KẾT QUẢ CHI TIẾT</h1>
+                </td>
+              </tr>
+              <tr>
+                <th scope="col">Tổng số câu hỏi</th>
+                <th scope="col">Tổng số câu đúng</th>
+                <th scope="col">Tổng số câu sai</th>
+                <th scope="col">Lần làm bài thứ</th>
+                <th scope="col">Thời gian nộp</th>
+                <th scope="col">Tổng điểm</th>
+
+              </tr>
+              <tbody>
+                <tr>
+                  <td>{{ quiz_result.total_questions }}</td>
+                  <td>{{ quiz_result.correct_answers }}</td>
+                  <td>{{ quiz_result.incorrect_answers }}</td>
+                  <td>{{ quiz_result.attempt_number }}</td>'                
+                  <td>{{ quiz_result.submit_time }}</td>
+                  <td>{{ quiz_result.score }}</td>
+                </tr>
+              </tbody>
+            
+          </table> <br>
+        
+        <style>
+          table {
+              width: 50%; 
+              margin: 0 auto; 
+              border-collapse: collapse;
+            }
+          #customerX {
+            font-family: Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 60%;
+          }
+          
+      
+          th, td {
+              border: 1px solid #ddd;
+              padding: 8px;
+              text-align: left;
+              max-width: 200px; 
+              overflow: hidden;
+              text-overflow: ellipsis; 
+              word-wrap: break-word;
+            }
+          
+          #customerX tr:nth-child(even){background-color: #f2f2f2;}
+          
+          #customerX tr:hover {background-color: #ddd;}
+          
+          #customerX th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color:    #32CD32
+
+
+            ;
+            color: white;
+          }
+          #customerX .colspanned {
+            background-color: #90EE90
+
+          }
+          </style>
+      <table id="customerX">
+          <tr>
+              <td class="colspanned text-center" colspan="4"><h1>TỶ LỆ CÂU ĐÚNG THEO YÊU CẦU CẦN ĐẠT</h1>
+
+              </td>
+            </tr>
+            
+            <tr>
+              <th scope="col">ID_YCCD</th>
+              <th scope="col">Yêu cầu cần đạt</th>
+              <th scope="col">Số câu đúng</th>
+              <th scope="col">Phần trăm (%)</th>
+            </tr>
+            <tbody>
+            
+              {% for requirement_id, stats in correct_answers_by_requirement.items %}
+
+            <tr>
+              <th scope="row">{{ requirement_id }}</th>
+              <td>{{ stats.content }} {{ stats.content_yccd }}</td>
+              <td>{{ stats.correct }} / {{ stats.total }}</td>
+              <td>{{ stats.percentage|floatformat:2  }}%</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+          
+        </table>
+        <br>
+
+                  <div class="text-right">
+                          <button id="toggleButton">Xem Danh Sách Câu Hỏi</button>
+                  </div>
+                    <style>
+                      table {
+                          width: 100%; 
+                          margin: 0 auto; 
+                          border-collapse: collapse;
+                        }
+                      #customer {
+                        font-family: Arial, Helvetica, sans-serif;
+                        border-collapse: collapse;
+                        width: 100%;
+                      }
+                      
+                  
+                      th, td {
+                          border: 1px solid #ddd;
+                          padding: 8px;
+                          text-align: left;
+                          max-width: 200px; 
+                          overflow: hidden;
+                          text-overflow: ellipsis; 
+                          word-wrap: break-word; 
+                        }
+                      
+                      #customer tr:nth-child(even){background-color: #f2f2f2;}
+                      
+                      #customer tr:hover {background-color: #ddd;}
+                      
+                      #customer th {
+                        padding-top: 12px;
+                        padding-bottom: 12px;
+                        text-align: left;
+                        background-color:    #04AA6D
+                        ;
+                        color: white;
+                      }
+                      .colspanned {
+                        background-color: #90EE90
+                      }
+                      h6 {
+                        color:    #00FF00                    
+                      }
+                      h7 {
+                        color:  #FF0000
+                      }
+                      </style>
+                      <div id="questionTable" style="display: none;">
+
+                  <table id="customer">
+                      <tr>
+                          <td class="colspanned text-center" colspan="4"><h2>DANH SÁCH CÂU HỎI ĐÃ LÀM</h2>
+            
+                          </td>
+                        </tr>
+                        
+                          <tr>
+                            <th scope="col">Nội dung câu hỏi</th>
+                            <th scope="col">Phương án đã chọn</th>
+                            <th scope="col">Status</th>
+                          </tr>
+                          <tbody>
+                            {% for user_answer in user_answers %}
+                            <tr>
+                              <th scope="row"> {{ user_answer.question.text_question }} </th>
+                              <td>{{ user_answer.chosen_option.text_option }}</td>
+                              <td>
+                                {% if user_answer.is_correct %}
+                                  <h6><strong>ĐÚNG</strong></h6>
+                                {% else %}
+                                  <h7><strong>SAI</strong></h7>
+                                {% endif %}
+                              </td>
+    
+                            </tr>
+                            {% endfor %}
+                          </tbody>
+                      
+                    </table>
+                  </div>
+                    <script>
+                      document.addEventListener('DOMContentLoaded', function () {
+                        var toggleButton = document.getElementById('toggleButton');
+                        var questionTable = document.getElementById('questionTable');
+                    
+                        toggleButton.addEventListener('click', function () {
+                          if (questionTable.style.display === 'none') {
+                            questionTable.style.display = 'block';
+                            toggleButton.innerText = 'Ẩn Danh Sách Câu Hỏi';
+                          } else {
+                            questionTable.style.display = 'none';
+                            toggleButton.innerText = 'Xem Danh Sách Câu Hỏi';
+                          }
+                        });
+                      });
+                    </script>
+        {%endblock login%}
+                  </body>
+</html>
